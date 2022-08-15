@@ -70,10 +70,13 @@ const IndexPage = () => {
                 randomID,
               }),
             });
+            const uploadSuccessful = await upload.json();
+            console.log(uploadSuccessful);
             // prompt user in case of eror
-            if (!upload.ok) alert("Error adding todo");
+            // if (!upload.ok) alert("Error adding todo");
             // add a new task with a random id and the newly added todo
-            else setTodos([...todos, { id: randomID, task: newTodo }]);
+            // else
+            setTodos([...todos, { id: randomID, task: newTodo }]);
           }}
           mt="auto"
         >
