@@ -12,6 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         );
         const todos = await getTodos.json();
         // turn it into JSON and return it
+        console.log("THE GET REQUEST:", todos);
         res.json(todos.results);
 
       case "POST":
@@ -29,6 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           }
         );
         const create = await createTodo.json();
+        console.log("THE POST REQUEST:", create);
         res.json(create);
 
       case "DELETE":
@@ -47,8 +49,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         throw new Error("Request method not supported");
     }
   } catch (error) {
+    console.log(error.message);
     // in the case of an error catch it and return the message
-    res.send({ error: error.message });
+    res.json({ error: error.message });
   }
 };
 export default handler;
