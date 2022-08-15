@@ -13,7 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const todos = await getTodos.json();
         // turn it into JSON and return it
         console.log("THE GET REQUEST:", todos);
-        res.json(todos.results);
+        res.send(todos.results);
 
       case "POST":
         const { todo: task, randomID } = JSON.parse(req.body);
@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         );
         const create = await createTodo.json();
         console.log("THE POST REQUEST:", create);
-        res.json(create);
+        res.send(create);
 
       case "DELETE":
         const { id } = JSON.parse(req.body);
@@ -42,7 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           { method: req.method, body: JSON.stringify({ id }) }
         );
         const del = await deleteTodo.json();
-        res.json(del);
+        res.send(del);
       // only GET, POST, and DELETE requests are allowed
       default:
         // if different request method than above is passed, throw error
@@ -51,7 +51,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   } catch (error) {
     console.log(error.message);
     // in the case of an error catch it and return the message
-    res.json({ error: error.message });
+    res.send({ error: error.message });
   }
 };
 export default handler;
