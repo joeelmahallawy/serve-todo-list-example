@@ -12,9 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         );
         const todos = await getTodos.json();
         // turn it into JSON and return it
-        console.log("THE GET REQUEST:", todos);
-        res.send(todos.results);
-
+        return res.json(todos.results);
       case "POST":
         const { todo: task, randomID } = JSON.parse(req.body);
         // url for executing: INSERT INTO todo(id,task) VALUES('{{id}}','{{task}}')
@@ -23,15 +21,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           {
             // pass in dynamic body params 'id' and 'task'
             method: req.method,
-            body: JSON.stringify({
-              id: randomID,
-              task,
-            }),
+            body: JSON.stringify({ id: randomID, task }),
           }
         );
         const create = await createTodo.json();
         console.log("THE POST REQUEST:", create);
-        res.send(create);
+        return res.json(create);
 
       case "DELETE":
         const { id } = JSON.parse(req.body);
@@ -42,16 +37,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           { method: req.method, body: JSON.stringify({ id }) }
         );
         const del = await deleteTodo.json();
-        res.send(del);
+        return res.json(del);
       // only GET, POST, and DELETE requests are allowed
       default:
-        // if different request method than above is passed, throw error
+        // if not any of those methods, throw error
         throw new Error("Request method not supported");
     }
-  } catch (error) {
-    console.log(error.message);
+  } catch (err) {
     // in the case of an error catch it and return the message
-    res.send({ error: error.message });
+    return res.json({ err: err.message });
   }
 };
 export default handler;
